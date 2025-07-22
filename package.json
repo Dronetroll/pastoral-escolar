@@ -1,0 +1,26 @@
+{
+  "name": "pastoral-escolar",
+  "version": "1.0.0",
+  "description": "Sistema completo para gestão da Pastoral Escolar Adventista",
+  "main": "index.js",
+  "scripts": {
+    "install:all": "cd backend && npm install && cd ../frontend && npm install",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev", 
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "build": "cd frontend && npm run build",
+    "start": "cd backend && npm start"
+  },
+  "keywords": [
+    "pastoral",
+    "escolar",
+    "adventista",
+    "sistema",
+    "gestao"
+  ],
+  "author": "Sistema Pastoral Escolar",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}

@@ -1,0 +1,239 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id        String   @id @default(cuid())
+  nome      String
+  email     String   @unique
+  senha     String
+  role      Role     @default(USER)
+  ativo     Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relacionamentos
+  atendimentosPastorais AtendimentoPastoral[]
+  planejamentosPastorais PlanejamentoPastoral[]
+
+  @@map("usuarios")
+}
+
+enum Role {
+  ADMIN
+  PASTOR
+  USER
+}
+
+model AlunoAdventista {
+  id              String   @id @default(cuid())
+  nome            String
+  cpf             String?  @unique
+  dataNascimento  DateTime?
+  telefone        String?
+  email           String?
+  endereco        String?
+  turma           String?
+  serie           String?
+  periodo         String?
+  responsavel     String?
+  telefoneResponsavel String?
+  batizado        Boolean  @default(false)
+  dataBatismo     DateTime?
+  igreja          String?
+  observacoes     String?
+  ativo           Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relacionamentos
+  comunidadeId    String?
+  comunidade      Comunidade? @relation(fields: [comunidadeId], references: [id])
+  classesBiblicas ClasseBiblica[]
+  atendimentosPastorais AtendimentoPastoral[]
+
+  @@map("alunos_adventistas")
+}
+
+model Batismo {
+  id              String   @id @default(cuid())
+  nome            String
+  cpf             String?
+  dataNascimento  DateTime?
+  dataBatismo     DateTime
+  local           String
+  pastor          String
+  igreja          String
+  testemunhas     String?
+  observacoes     String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("batismos")
+}
+
+model Colaborador {
+  id              String   @id @default(cuid())
+  nome            String
+  cpf             String?  @unique
+  dataNascimento  DateTime?
+  telefone        String?
+  email           String?
+  endereco        String?
+  cargo           String?
+  departamento    String?
+  dataAdmissao    DateTime?
+  salario         Decimal?
+  ativo           Boolean  @default(true)
+  observacoes     String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("colaboradores")
+}
+
+model EscolaSaudavel {
+  id              String   @id @default(cuid())
+  titulo          String
+  descricao       String?
+  tipo            String   // palestra, workshop, campanha, etc
+  dataInicio      DateTime
+  dataFim         DateTime?
+  responsavel     String
+  publicoAlvo     String?
+  local           String?
+  participantes   Int?
+  observacoes     String?
+  ativo           Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("escola_saudavel")
+}
+
+model Comunidade {
+  id              String   @id @default(cuid())
+  nome            String
+  descricao       String?
+  endereco        String?
+  responsavel     String?
+  telefone        String?
+  diasReuniao     String?
+  horario         String?
+  ativa           Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relacionamentos
+  alunosAdventistas AlunoAdventista[]
+  classesBiblicas   ClasseBiblica[]
+
+  @@map("comunidades")
+}
+
+model Evento {
+  id              String   @id @default(cuid())
+  titulo          String
+  descricao       String?
+  tipo            String   // culto, reuniao, conferencia, etc
+  dataInicio      DateTime
+  dataFim         DateTime?
+  local           String?
+  responsavel     String?
+  publicoAlvo     String?
+  estimativaParticipantes Int?
+  observacoes     String?
+  ativo           Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("eventos")
+}
+
+model ClasseBiblica {
+  id              String   @id @default(cuid())
+  nome            String
+  descricao       String?
+  professor       String
+  diasSemana      String   // JSON ou string com dias
+  horario         String
+  local           String?
+  ativa           Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relacionamentos
+  comunidadeId    String?
+  comunidade      Comunidade? @relation(fields: [comunidadeId], references: [id])
+  alunos          AlunoAdventista[]
+
+  @@map("classes_biblicas")
+}
+
+model Recolta {
+  id              String   @id @default(cuid())
+  titulo          String
+  descricao       String?
+  tipo            String   // oferta, dizimo, campanha, etc
+  valor           Decimal
+  data            DateTime
+  origem          String?  // evento, culto, etc
+  responsavel     String?
+  observacoes     String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("recoltas")
+}
+
+model AtendimentoPastoral {
+  id              String   @id @default(cuid())
+  titulo          String
+  descricao       String?
+  tipo            String   // aconselhamento, visitacao, oracão, etc
+  data            DateTime
+  duracao         Int?     // em minutos
+  local           String?
+  observacoes     String?
+  privado         Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relacionamentos
+  pastorId        String
+  pastor          Usuario @relation(fields: [pastorId], references: [id])
+  alunoId         String?
+  aluno           AlunoAdventista? @relation(fields: [alunoId], references: [id])
+
+  @@map("atendimentos_pastorais")
+}
+
+model PlanejamentoPastoral {
+  id              String   @id @default(cuid())
+  titulo          String
+  descricao       String?
+  tipo            String   // mensal, trimestral, anual, etc
+  dataInicio      DateTime
+  dataFim         DateTime
+  objetivos       String?
+  metas           String?  // JSON
+  status          String   @default("PLANEJADO") // PLANEJADO, EM_ANDAMENTO, CONCLUIDO
+  prioridade      String   @default("MEDIA") // BAIXA, MEDIA, ALTA
+  observacoes     String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relacionamentos
+  responsavelId   String
+  responsavel     Usuario @relation(fields: [responsavelId], references: [id])
+
+  @@map("planejamento_pastoral")
+}
