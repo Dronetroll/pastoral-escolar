@@ -1,6 +1,6 @@
 {
   "name": "pastoral-escolar",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Sistema completo para gestão da Pastoral Escolar Adventista",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,12 @@
     "dev:frontend": "cd frontend && npm run dev", 
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "build": "cd frontend && npm run build",
-    "start": "cd backend && npm start"
+    "start": "cd backend && npm start",
+    "update:patch": "npm run install:all && echo 'Patch aplicado com sucesso!'",
+    "backup:data": "node scripts/backup.js",
+    "migrate": "cd backend && npx prisma db push",
+    "reset:cache": "node scripts/clear-cache.js",
+    "health:check": "node scripts/health-check.js"
   },
   "keywords": [
     "pastoral",

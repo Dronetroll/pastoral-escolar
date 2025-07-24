@@ -1,1 +1,1 @@
-
+export { default } from './PastoralCare.jsx';

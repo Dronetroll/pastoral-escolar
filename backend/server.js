@@ -8,10 +8,12 @@ require('dotenv').config();
 // Importar rotas
 const authRoutes = require('./routes/auth');
 const alunosRoutes = require('./routes/alunos');
+const batismosRoutes = require('./routes/batismos');
+const eventosRoutes = require('./routes/eventos');
 
 const app = express();
 const prisma = new PrismaClient();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3005;
 
 // Middlewares de segurança
 app.use(helmet());
@@ -28,10 +30,11 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // CORS
+// CORS - permitir qualquer origem em desenvolvimento
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://your-production-domain.com'] 
-    : ['http://localhost:3000', 'http://127.0.0.1:3000'],
+  origin: process.env.NODE_ENV === 'production'
+    ? ['https://your-production-domain.com']
+    : '*',
   credentials: true
 }));
 
@@ -59,6 +62,8 @@ app.get('/health', (req, res) => {
 // Rotas da API
 app.use('/api/auth', authRoutes);
 app.use('/api/alunos', alunosRoutes);
+app.use('/api/batismos', batismosRoutes);
+app.use('/api/eventos', eventosRoutes);
 
 // Middleware para rotas não encontradas
 app.use('*', (req, res) => {

@@ -59,6 +59,7 @@ model AlunoAdventista {
   comunidade      Comunidade? @relation(fields: [comunidadeId], references: [id])
   classesBiblicas ClasseBiblica[]
   atendimentosPastorais AtendimentoPastoral[]
+  participacaoEventos ParticipanteEvento[]
 
   @@map("alunos_adventistas")
 }
@@ -143,19 +144,86 @@ model Evento {
   id              String   @id @default(cuid())
   titulo          String
   descricao       String?
-  tipo            String   // culto, reuniao, conferencia, etc
+  categoria       String?  // Categoria do evento
   dataInicio      DateTime
   dataFim         DateTime?
   local           String?
   responsavel     String?
   publicoAlvo     String?
   estimativaParticipantes Int?
-  observacoes     String?
+  cor             String?  // Cor para exibição no calendário
+  prioridade      Prioridade @default(MEDIA)
   ativo           Boolean  @default(true)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
+  // Campos de recorrência
+  tipoRecorrencia     TipoRecorrencia?
+  intervalorRecorrencia Int?
+  dataFimRecorrencia  DateTime?
+  diasSemana          Int[]  // Array de dias da semana (0-6)
+  eventoRecorrenteId  String? // ID do evento pai se for recorrente
+
+  // Campos de notificação
+  notificarAntes        Int[]   // Minutos antes para notificar
+  notificarParticipantes Boolean @default(false)
+  notificarResponsavel   Boolean @default(true)
+
+  // Relacionamentos
+  participantes       ParticipanteEvento[]
+  recurso            RecursoEvento?
+
   @@map("eventos")
+}
+
+enum Prioridade {
+  BAIXA
+  MEDIA
+  ALTA
+  URGENTE
+}
+
+enum TipoRecorrencia {
+  NENHUMA
+  DIARIO
+  SEMANAL
+  MENSAL
+  ANUAL
+}
+
+model ParticipanteEvento {
+  id          String   @id @default(cuid())
+  eventoId    String
+  nome        String
+  email       String?
+  telefone    String?
+  confirmado  Boolean  @default(false)
+  observacoes String?
+  createdAt   DateTime @default(now())
+
+  // Relacionamentos
+  evento           Evento          @relation(fields: [eventoId], references: [id], onDelete: Cascade)
+  alunoAdventistaId String?
+  alunoAdventista  AlunoAdventista? @relation(fields: [alunoAdventistaId], references: [id])
+
+  @@map("participantes_eventos")
+}
+
+model RecursoEvento {
+  id            String   @id @default(cuid())
+  eventoId      String   @unique
+  equipamentos  String[] // Lista de equipamentos necessários
+  materiais     String[] // Lista de materiais necessários
+  pessoal       String[] // Lista de pessoal necessário
+  orcamento     Float    @default(0)
+  observacoes   String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relacionamentos
+  evento        Evento   @relation(fields: [eventoId], references: [id], onDelete: Cascade)
+
+  @@map("recursos_eventos")
 }
 
 model ClasseBiblica {

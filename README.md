@@ -1,6 +1,23 @@
-# 🏫 Sistema Pastoral Escolar
+# 🏫 Sistema Pastoral Escolar v1.1.0
 
 Um sistema web completo e profissional para gestão da Pastoral Escolar Adventista, desenvolvido com tecnologias modernas e interface intuitiva.
+
+## 🆕 Novidades da Versão 1.1.0
+
+### ✨ Novas Funcionalidades
+- **Centro de Notificações Avançado** - Sistema completo de notificações em tempo real
+- **Validação Inteligente de Formulários** - Validações robustas com feedback visual
+- **Sistema de Cache** - Melhoria significativa de performance
+- **Estados Globais** - Gerenciamento centralizado do estado da aplicação
+- **Componentes de Loading** - Indicadores visuais aprimorados
+- **Interface de Usuário Melhorada** - Header redesenhado com menu de usuário
+
+### 🔧 Melhorias Técnicas
+- Sistema de cache inteligente para otimização de performance
+- Validação em tempo real com formatação automática
+- Gerenciamento de estado global com Context API
+- Componentes de loading reutilizáveis
+- Tratamento avançado de erros
 
 ## 🚀 Tecnologias
 

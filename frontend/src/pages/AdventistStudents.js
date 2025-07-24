@@ -1,1 +1,1 @@
-
+export { default } from './AdventistStudents.jsx';

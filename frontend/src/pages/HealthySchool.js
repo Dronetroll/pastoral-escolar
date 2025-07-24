@@ -1,1 +1,1 @@
-
+export { default } from './HealthySchool.jsx';

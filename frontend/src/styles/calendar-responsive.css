@@ -1,0 +1,110 @@
+/* Estilos adicionais para melhorar a responsividade do calendário */
+
+/* Breakpoints personalizados */
+@media (max-width: 320px) {
+  /* Smartphones pequenos */
+  .calendar-content .grid-cols-7 > div {
+    min-height: 60px;
+  }
+  
+  .calendar-content .text-xs {
+    font-size: 0.65rem;
+  }
+}
+
+@media (min-width: 321px) and (max-width: 480px) {
+  /* Smartphones médios */
+  .calendar-content .grid-cols-7 > div {
+    min-height: 80px;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  /* Tablets portrait */
+  .calendar-content .grid-cols-7 > div {
+    min-height: 100px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Tablets landscape */
+  .calendar-content .grid-cols-7 > div {
+    min-height: 120px;
+  }
+}
+
+@media (min-width: 1025px) {
+  /* Desktop */
+  .calendar-content .grid-cols-7 > div {
+    min-height: 140px;
+  }
+}
+
+/* Melhorias para touch */
+@media (pointer: coarse) {
+  .calendar-content button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .calendar-content .cursor-pointer {
+    padding: 8px;
+  }
+}
+
+/* Otimizações para modo paisagem em móveis */
+@media (max-height: 500px) and (orientation: landscape) {
+  .calendar-content .min-h-screen {
+    min-height: auto;
+  }
+  
+  .calendar-content .grid-cols-7 > div {
+    min-height: 60px;
+  }
+}
+
+/* Estilos para impressão */
+@media print {
+  .calendar-content {
+    background: white !important;
+  }
+  
+  .calendar-content button {
+    display: none;
+  }
+  
+  .calendar-content .bg-gray-50 {
+    background: #f9f9f9 !important;
+  }
+}
+
+/* Animações suaves para transições responsivas */
+.calendar-content * {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Scroll horizontal suave para week view em mobile */
+.calendar-content .overflow-x-auto {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Melhor contraste para acessibilidade */
+@media (prefers-high-contrast: high) {
+  .calendar-content .text-gray-500 {
+    color: #000 !important;
+  }
+  
+  .calendar-content .border-gray-200 {
+    border-color: #000 !important;
+  }
+}
+
+/* Redução de movimento para usuários sensíveis */
+@media (prefers-reduced-motion: reduce) {
+  .calendar-content * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,6 +1,6 @@
 {
   "name": "pastoral-escolar-backend",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Backend API para Sistema Pastoral Escolar",
   "main": "server.js",
   "scripts": {
